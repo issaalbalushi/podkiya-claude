@@ -1,71 +1,70 @@
+import Link from 'next/link';
+import { ArrowRight, Play } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted">
-      <div className="container mx-auto px-4 py-16">
+    <div className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+      {/* Hero Section */}
+      <div className="container mx-auto px-4 py-20 md:py-32">
         <div className="max-w-4xl mx-auto text-center space-y-8">
-          {/* Hero Section */}
-          <div className="space-y-4">
-            <h1 className="text-6xl font-bold tracking-tight">
-              Welcome to{' '}
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Podkiya
-              </span>
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Discover and share bite-sized educational audio clips. Learn something new in just 1-3 minutes.
-            </p>
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm font-medium">
+            <Play className="w-4 h-4" />
+            Micro-Learning Audio Platform
           </div>
 
-          {/* Features Grid */}
-          <div className="grid md:grid-cols-3 gap-6 mt-16">
-            <div className="p-6 rounded-lg border bg-card">
-              <div className="text-4xl mb-4">🎧</div>
-              <h3 className="text-lg font-semibold mb-2">Quick Learning</h3>
-              <p className="text-sm text-muted-foreground">
-                Audio clips designed to fit into your busy schedule
-              </p>
-            </div>
+          {/* Headline */}
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
+            Learn in{' '}
+            <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 bg-clip-text text-transparent animate-gradient">
+              3 Minutes
+            </span>
+          </h1>
 
-            <div className="p-6 rounded-lg border bg-card">
-              <div className="text-4xl mb-4">🌍</div>
-              <h3 className="text-lg font-semibold mb-2">Multilingual</h3>
-              <p className="text-sm text-muted-foreground">
-                Content in English, Arabic, and more languages
-              </p>
-            </div>
+          {/* Description */}
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            Discover bite-sized educational audio clips. Swipe, listen, learn.
+          </p>
 
-            <div className="p-6 rounded-lg border bg-card">
-              <div className="text-4xl mb-4">✨</div>
-              <h3 className="text-lg font-semibold mb-2">Quality Content</h3>
-              <p className="text-sm text-muted-foreground">
-                All clips reviewed by experts before publishing
-              </p>
-            </div>
+          {/* CTA */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+            <Link href="/explore">
+              <Button size="lg" className="rounded-full px-8 py-6 text-lg group">
+                Start Learning
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
           </div>
 
-          {/* CTA Buttons */}
-          <div className="flex gap-4 justify-center mt-12">
-            <button className="px-8 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition">
-              Explore Clips
-            </button>
-            <button className="px-8 py-3 border rounded-lg font-medium hover:bg-accent transition">
-              Learn More
-            </button>
+          {/* Stats */}
+          <div className="grid grid-cols-3 gap-8 pt-12 max-w-2xl mx-auto">
+            <div>
+              <div className="text-3xl font-bold text-purple-600">1-3min</div>
+              <div className="text-sm text-muted-foreground mt-1">Per Clip</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-blue-600">1000+</div>
+              <div className="text-sm text-muted-foreground mt-1">Topics</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-purple-600">Daily</div>
+              <div className="text-sm text-muted-foreground mt-1">Updates</div>
+            </div>
           </div>
+        </div>
+      </div>
 
-          {/* Status Info */}
-          <div className="mt-16 p-6 rounded-lg bg-muted/50 border">
-            <h3 className="text-lg font-semibold mb-2">🚀 Development Status</h3>
-            <p className="text-sm text-muted-foreground">
-              Backend infrastructure is complete! Frontend UI is being implemented.
-              <br />
-              <span className="text-xs">Check out the{' '}
-                <a href="https://github.com/issaalbalushi/podkiya-claude" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
-                  GitHub repository
-                </a>
-                {' '}for implementation progress.
-              </span>
-            </p>
+      {/* Feature Preview */}
+      <div className="container mx-auto px-4 pb-20">
+        <div className="max-w-5xl mx-auto">
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl border bg-card">
+            <div className="aspect-video bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center">
+              <div className="text-white text-center">
+                <Play className="w-20 h-20 mx-auto mb-4 opacity-80" />
+                <p className="text-lg font-medium">Tap to preview the experience</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
