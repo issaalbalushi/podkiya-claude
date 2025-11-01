@@ -1,14 +1,8 @@
-import createMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 
-const intlMiddleware = createMiddleware({
-  locales: ['en', 'ar'],
-  defaultLocale: 'en',
-});
-
 export default function middleware(request: NextRequest) {
-  // Run i18n middleware
-  const response = intlMiddleware(request);
+  // Create response
+  const response = NextResponse.next();
 
   // Add custom headers
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
