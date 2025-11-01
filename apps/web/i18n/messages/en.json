@@ -1,0 +1,136 @@
+{
+  "common": {
+    "appName": "Podkiya",
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "actions": "Actions"
+  },
+  "nav": {
+    "home": "Home",
+    "feed": "Feed",
+    "upload": "Upload",
+    "review": "Review",
+    "search": "Search",
+    "following": "Following",
+    "profile": "Profile",
+    "admin": "Admin",
+    "notifications": "Notifications",
+    "settings": "Settings",
+    "signIn": "Sign In",
+    "signOut": "Sign Out"
+  },
+  "auth": {
+    "signInTitle": "Welcome to Podkiya",
+    "signInDescription": "Sign in to continue",
+    "signInWithGoogle": "Sign in with Google",
+    "signInWithApple": "Sign in with Apple",
+    "signInWithEmail": "Sign in with Email",
+    "emailPlaceholder": "Enter your email",
+    "checkEmail": "Check your email for a sign-in link"
+  },
+  "feed": {
+    "title": "Discover Clips",
+    "empty": "No clips found",
+    "emptyDescription": "Be the first to upload a clip!",
+    "loading": "Loading clips..."
+  },
+  "upload": {
+    "title": "Upload Clip",
+    "audioFile": "Audio File",
+    "audioFileDescription": "Upload an MP3, M4A, or WAV file (max 3 minutes)",
+    "clipTitle": "Title",
+    "clipTitlePlaceholder": "Enter clip title (max 80 characters)",
+    "description": "Description",
+    "descriptionPlaceholder": "Optional description",
+    "language": "Language",
+    "tags": "Tags",
+    "tagsDescription": "Select up to 5 tags",
+    "thumbnail": "Thumbnail (Optional)",
+    "uploadButton": "Upload Clip",
+    "uploading": "Uploading...",
+    "success": "Clip uploaded successfully!",
+    "error": "Upload failed. Please try again.",
+    "durationExceeded": "Audio duration exceeds 3 minute limit",
+    "rateLimitExceeded": "Upload limit reached. Try again tomorrow."
+  },
+  "review": {
+    "title": "Review Queue",
+    "approve": "Approve",
+    "reject": "Reject",
+    "notes": "Notes",
+    "notesPlaceholder": "Add review notes (optional)",
+    "approveSuccess": "Clip approved",
+    "rejectSuccess": "Clip rejected",
+    "empty": "No clips to review",
+    "filters": "Filters",
+    "keyboardShortcuts": "Keyboard Shortcuts",
+    "shortcutApprove": "A - Approve",
+    "shortcutReject": "R - Reject",
+    "shortcutNext": "J - Next",
+    "shortcutPrev": "K - Previous"
+  },
+  "player": {
+    "play": "Play",
+    "pause": "Pause",
+    "speed": "Speed",
+    "like": "Like",
+    "save": "Save",
+    "share": "Share",
+    "transcript": "Transcript",
+    "showTranscript": "Show Transcript",
+    "hideTranscript": "Hide Transcript"
+  },
+  "profile": {
+    "followers": "Followers",
+    "following": "Following",
+    "clips": "Clips",
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "editProfile": "Edit Profile",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell us about yourself"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search clips, creators, topics...",
+    "results": "Results",
+    "noResults": "No results found",
+    "tryDifferent": "Try a different search term"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "users": "Users",
+    "clips": "Clips",
+    "reports": "Reports",
+    "analytics": "Analytics",
+    "tags": "Tags",
+    "auditLog": "Audit Log",
+    "stats": {
+      "totalClips": "Total Clips",
+      "totalUsers": "Total Users",
+      "pendingReviews": "Pending Reviews",
+      "approvalRate": "Approval Rate"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "empty": "No notifications",
+    "clipApproved": "Your clip was approved",
+    "clipRejected": "Your clip was rejected",
+    "newFollower": "started following you",
+    "newLike": "liked your clip",
+    "newSave": "saved your clip"
+  }
+}

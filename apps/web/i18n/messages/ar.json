@@ -1,0 +1,136 @@
+{
+  "common": {
+    "appName": "بودكيا",
+    "loading": "جار التحميل...",
+    "error": "خطأ",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "close": "إغلاق",
+    "back": "رجوع",
+    "next": "التالي",
+    "submit": "إرسال",
+    "search": "بحث",
+    "filter": "تصفية",
+    "sort": "ترتيب",
+    "actions": "إجراءات"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "feed": "التدفق",
+    "upload": "رفع",
+    "review": "مراجعة",
+    "search": "بحث",
+    "following": "المتابَعون",
+    "profile": "الملف الشخصي",
+    "admin": "الإدارة",
+    "notifications": "الإشعارات",
+    "settings": "الإعدادات",
+    "signIn": "تسجيل الدخول",
+    "signOut": "تسجيل الخروج"
+  },
+  "auth": {
+    "signInTitle": "مرحباً بك في بودكيا",
+    "signInDescription": "سجل دخولك للمتابعة",
+    "signInWithGoogle": "تسجيل الدخول بجوجل",
+    "signInWithApple": "تسجيل الدخول بآبل",
+    "signInWithEmail": "تسجيل الدخول بالبريد الإلكتروني",
+    "emailPlaceholder": "أدخل بريدك الإلكتروني",
+    "checkEmail": "تحقق من بريدك الإلكتروني لرابط تسجيل الدخول"
+  },
+  "feed": {
+    "title": "اكتشف المقاطع",
+    "empty": "لا توجد مقاطع",
+    "emptyDescription": "كن أول من يرفع مقطعاً!",
+    "loading": "جار تحميل المقاطع..."
+  },
+  "upload": {
+    "title": "رفع مقطع",
+    "audioFile": "ملف صوتي",
+    "audioFileDescription": "ارفع ملف MP3 أو M4A أو WAV (بحد أقصى 3 دقائق)",
+    "clipTitle": "العنوان",
+    "clipTitlePlaceholder": "أدخل عنوان المقطع (بحد أقصى 80 حرفاً)",
+    "description": "الوصف",
+    "descriptionPlaceholder": "وصف اختياري",
+    "language": "اللغة",
+    "tags": "الوسوم",
+    "tagsDescription": "اختر حتى 5 وسوم",
+    "thumbnail": "صورة مصغرة (اختيارية)",
+    "uploadButton": "رفع المقطع",
+    "uploading": "جار الرفع...",
+    "success": "تم رفع المقطع بنجاح!",
+    "error": "فشل الرفع. يرجى المحاولة مرة أخرى.",
+    "durationExceeded": "مدة الصوت تتجاوز حد 3 دقائق",
+    "rateLimitExceeded": "تم الوصول إلى حد الرفع. حاول مرة أخرى غداً."
+  },
+  "review": {
+    "title": "قائمة المراجعة",
+    "approve": "موافقة",
+    "reject": "رفض",
+    "notes": "ملاحظات",
+    "notesPlaceholder": "أضف ملاحظات المراجعة (اختياري)",
+    "approveSuccess": "تمت الموافقة على المقطع",
+    "rejectSuccess": "تم رفض المقطع",
+    "empty": "لا توجد مقاطع للمراجعة",
+    "filters": "تصفية",
+    "keyboardShortcuts": "اختصارات لوحة المفاتيح",
+    "shortcutApprove": "A - موافقة",
+    "shortcutReject": "R - رفض",
+    "shortcutNext": "J - التالي",
+    "shortcutPrev": "K - السابق"
+  },
+  "player": {
+    "play": "تشغيل",
+    "pause": "إيقاف مؤقت",
+    "speed": "السرعة",
+    "like": "إعجاب",
+    "save": "حفظ",
+    "share": "مشاركة",
+    "transcript": "النص المكتوب",
+    "showTranscript": "إظهار النص",
+    "hideTranscript": "إخفاء النص"
+  },
+  "profile": {
+    "followers": "المتابعون",
+    "following": "المتابَعون",
+    "clips": "المقاطع",
+    "follow": "متابعة",
+    "unfollow": "إلغاء المتابعة",
+    "editProfile": "تعديل الملف الشخصي",
+    "bio": "السيرة الذاتية",
+    "bioPlaceholder": "أخبرنا عن نفسك"
+  },
+  "search": {
+    "title": "بحث",
+    "placeholder": "ابحث عن مقاطع، منشئين، مواضيع...",
+    "results": "النتائج",
+    "noResults": "لا توجد نتائج",
+    "tryDifferent": "جرب مصطلح بحث آخر"
+  },
+  "admin": {
+    "title": "لوحة الإدارة",
+    "users": "المستخدمون",
+    "clips": "المقاطع",
+    "reports": "البلاغات",
+    "analytics": "التحليلات",
+    "tags": "الوسوم",
+    "auditLog": "سجل التدقيق",
+    "stats": {
+      "totalClips": "إجمالي المقاطع",
+      "totalUsers": "إجمالي المستخدمين",
+      "pendingReviews": "المراجعات المعلقة",
+      "approvalRate": "معدل الموافقة"
+    }
+  },
+  "notifications": {
+    "title": "الإشعارات",
+    "markAllRead": "تعليم الكل كمقروء",
+    "empty": "لا توجد إشعارات",
+    "clipApproved": "تمت الموافقة على مقطعك",
+    "clipRejected": "تم رفض مقطعك",
+    "newFollower": "بدأ بمتابعتك",
+    "newLike": "أعجب بمقطعك",
+    "newSave": "حفظ مقطعك"
+  }
+}

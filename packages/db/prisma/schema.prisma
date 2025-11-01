@@ -1,0 +1,292 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  name         String?
+  avatarUrl    String?
+  bio          String?
+  languagePref String   @default("en")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  roles              Role[]
+  clipsCreated       Clip[]            @relation("CreatorClips")
+  reviewTasks        ReviewTask[]
+  reports            Report[]
+  likes              Like[]
+  saves              Save[]
+  followedBy         Follow[]          @relation("Following")
+  following          Follow[]          @relation("Follower")
+  playEvents         PlayEvent[]
+  notifications      Notification[]
+  auditLogs          AuditLog[]
+  accounts           Account[]
+  sessions           Session[]
+
+  @@index([email])
+}
+
+// Role model
+model Role {
+  id        String   @id @default(uuid())
+  userId    String
+  role      String   // 'viewer' | 'creator' | 'reviewer' | 'admin'
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, role])
+  @@index([userId])
+}
+
+// Clip model
+model Clip {
+  id               String    @id @default(uuid())
+  creatorId        String
+  title            String
+  description      String?
+  language         String    @default("en")
+  durationSec      Float     @default(0)
+  audioUrl         String?
+  waveformJsonUrl  String?
+  thumbUrl         String?
+  status           String    @default("draft") // 'draft' | 'in_review' | 'approved' | 'rejected' | 'removed'
+  rejectionReason  String?
+  createdAt        DateTime  @default(now())
+  publishedAt      DateTime?
+  updatedAt        DateTime  @updatedAt
+
+  // Relations
+  creator      User           @relation("CreatorClips", fields: [creatorId], references: [id], onDelete: Cascade)
+  tags         ClipTag[]
+  transcript   Transcript?
+  reviewTasks  ReviewTask[]
+  reports      Report[]
+  likes        Like[]
+  saves        Save[]
+  playEvents   PlayEvent[]
+
+  @@index([status, publishedAt(sort: Desc)])
+  @@index([creatorId])
+  @@index([language])
+  @@index([createdAt(sort: Desc)])
+}
+
+// Tag model
+model Tag {
+  id        String   @id @default(uuid())
+  slug      String   @unique
+  label_en  String
+  label_ar  String
+  createdAt DateTime @default(now())
+
+  clips ClipTag[]
+
+  @@index([slug])
+}
+
+// ClipTag junction table
+model ClipTag {
+  clipId String
+  tagId  String
+
+  clip Clip @relation(fields: [clipId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([clipId, tagId])
+  @@index([tagId])
+}
+
+// Transcript model
+model Transcript {
+  id           String   @id @default(uuid())
+  clipId       String   @unique
+  text         String
+  language     String
+  wordsJsonUrl String?
+  createdAt    DateTime @default(now())
+
+  clip Clip @relation(fields: [clipId], references: [id], onDelete: Cascade)
+
+  @@index([clipId])
+}
+
+// ReviewTask model
+model ReviewTask {
+  id         String    @id @default(uuid())
+  clipId     String
+  reviewerId String?
+  status     String    @default("open") // 'open' | 'approved' | 'rejected'
+  notes      String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  clip     Clip  @relation(fields: [clipId], references: [id], onDelete: Cascade)
+  reviewer User? @relation(fields: [reviewerId], references: [id], onDelete: SetNull)
+
+  @@index([clipId])
+  @@index([reviewerId])
+  @@index([status, createdAt(sort: Desc)])
+}
+
+// Report model
+model Report {
+  id         String   @id @default(uuid())
+  reporterId String
+  clipId     String
+  reason     String   // 'spam' | 'inappropriate_content' | 'misleading' | 'copyright' | 'other'
+  notes      String?
+  status     String   @default("pending") // 'pending' | 'reviewed' | 'dismissed' | 'actioned'
+  createdAt  DateTime @default(now())
+
+  reporter User @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+  clip     Clip @relation(fields: [clipId], references: [id], onDelete: Cascade)
+
+  @@index([clipId])
+  @@index([reporterId])
+  @@index([status])
+}
+
+// Like model
+model Like {
+  userId    String
+  clipId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clip Clip @relation(fields: [clipId], references: [id], onDelete: Cascade)
+
+  @@id([userId, clipId])
+  @@index([clipId])
+  @@index([userId])
+}
+
+// Save model
+model Save {
+  userId    String
+  clipId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clip Clip @relation(fields: [clipId], references: [id], onDelete: Cascade)
+
+  @@id([userId, clipId])
+  @@index([clipId])
+  @@index([userId])
+}
+
+// Follow model
+model Follow {
+  followerId      String
+  followingUserId String
+  createdAt       DateTime @default(now())
+
+  follower  User @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("Following", fields: [followingUserId], references: [id], onDelete: Cascade)
+
+  @@id([followerId, followingUserId])
+  @@index([followingUserId])
+  @@index([followerId])
+}
+
+// PlayEvent model
+model PlayEvent {
+  id        String   @id @default(uuid())
+  userId    String?
+  clipId    String
+  startedAt DateTime @default(now())
+  c30       Boolean  @default(false)
+  c60       Boolean  @default(false)
+  c90       Boolean  @default(false)
+  completed Boolean  @default(false)
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  clip Clip  @relation(fields: [clipId], references: [id], onDelete: Cascade)
+
+  @@index([clipId, startedAt(sort: Desc)])
+  @@index([userId])
+}
+
+// Notification model
+model Notification {
+  id        String    @id @default(uuid())
+  userId    String
+  type      String    // 'CLIP_APPROVED' | 'CLIP_REJECTED' | 'NEW_FOLLOWER' | 'NEW_LIKE' | 'NEW_SAVE'
+  dataJson  String    @db.Text // JSON string with notification data
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([userId, readAt])
+}
+
+// AuditLog model
+model AuditLog {
+  id          String   @id @default(uuid())
+  actorUserId String
+  action      String   // 'USER_ROLE_CHANGE' | 'USER_BAN' | 'CLIP_REMOVE' etc.
+  targetType  String
+  targetId    String
+  dataJson    String   @db.Text // JSON string with action details
+  createdAt   DateTime @default(now())
+
+  actor User @relation(fields: [actorUserId], references: [id], onDelete: Cascade)
+
+  @@index([actorUserId])
+  @@index([targetType, targetId])
+  @@index([createdAt(sort: Desc)])
+}
+
+// NextAuth models
+model Account {
+  id                String  @id @default(uuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
