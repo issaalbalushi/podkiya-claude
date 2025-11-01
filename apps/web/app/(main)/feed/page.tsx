@@ -113,9 +113,9 @@ export default function FeedPage() {
   return (
     <div className="relative h-screen w-full overflow-hidden bg-black">
       {/* Top Navigation Bar */}
-      <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between p-4">
-        {/* Home Button */}
-        <Link href="/">
+      <div className="absolute top-0 left-0 right-0 z-[60] flex items-center justify-between p-4">
+        {/* Home Button - goes to Explore (app home) */}
+        <Link href="/explore">
           <Button
             variant="ghost"
             size="icon"
@@ -136,20 +136,13 @@ export default function FeedPage() {
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md text-white border border-white/20"
+              className="rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md text-white border border-white/20 z-[60]"
             >
               <Menu className="w-5 h-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent className="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 border-white/20">
+          <SheetContent className="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 border-white/20 z-[100]">
             <nav className="flex flex-col gap-6 mt-12">
-              <Link
-                href="/"
-                onClick={() => setIsMenuOpen(false)}
-                className="text-2xl font-medium text-white hover:text-purple-300 transition"
-              >
-                Home
-              </Link>
               <Link
                 href="/explore"
                 onClick={() => setIsMenuOpen(false)}
