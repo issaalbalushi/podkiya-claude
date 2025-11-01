@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, Search, Bell, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from './theme-toggle';
@@ -9,6 +10,12 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Don't show header on /feed (full screen experience)
+  if (pathname === '/feed') {
+    return null;
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -23,6 +30,12 @@ export function Header() {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex gap-6 ml-10">
+          <Link
+            href="/feed"
+            className="text-sm font-medium hover:text-purple-600 transition"
+          >
+            Feed
+          </Link>
           <Link
             href="/explore"
             className="text-sm font-medium hover:text-purple-600 transition"
@@ -66,6 +79,13 @@ export function Header() {
             </SheetTrigger>
             <SheetContent>
               <nav className="flex flex-col gap-4 mt-8">
+                <Link
+                  href="/feed"
+                  onClick={() => setIsOpen(false)}
+                  className="text-lg font-medium hover:text-purple-600 transition"
+                >
+                  Feed
+                </Link>
                 <Link
                   href="/explore"
                   onClick={() => setIsOpen(false)}

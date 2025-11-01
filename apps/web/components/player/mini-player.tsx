@@ -1,14 +1,17 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { usePlayerStore } from '@/lib/store/player-store';
 import { Play, Pause, SkipForward, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function MiniPlayer() {
+  const pathname = usePathname();
   const { currentClip, isPlaying, setIsPlaying, setCurrentClip } = usePlayerStore();
 
-  if (!currentClip) return null;
+  // Don't show mini player on /feed (full screen experience) or if no clip
+  if (!currentClip || pathname === '/feed') return null;
 
   return (
     <AnimatePresence>

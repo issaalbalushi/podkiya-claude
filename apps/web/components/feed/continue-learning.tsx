@@ -4,13 +4,18 @@ import { usePlayerStore } from '@/lib/store/player-store';
 import { Play, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export function ContinueLearning() {
   const { currentClip } = usePlayerStore();
   const [isDismissed, setIsDismissed] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-  if (!currentClip || isDismissed) return null;
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted || !currentClip || isDismissed) return null;
 
   return (
     <AnimatePresence>

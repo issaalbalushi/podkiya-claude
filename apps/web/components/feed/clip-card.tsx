@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Heart, Bookmark, Play, Clock, TrendingUp } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Play, Clock, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { formatDuration } from '@podkiya/core';
 import { usePlayerStore } from '@/lib/store/player-store';
+import { LikeButton, SaveButton, CommentButton, FollowButton } from '@/components/social/social-actions';
 import Link from 'next/link';
 
 interface ClipCardProps {
@@ -18,6 +18,7 @@ interface ClipCardProps {
     audioUrl: string;
     thumbUrl?: string;
     creator: {
+      id?: string;
       name: string;
       avatarUrl?: string;
     };
@@ -31,29 +32,32 @@ interface ClipCardProps {
 
 export function ClipCard({ clip }: ClipCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   const { hasReachedCheckpoint } = usePlayerStore();
-  const progress = hasReachedCheckpoint(clip.id, 'complete')
+
+  const creatorId = clip.creator.id || `creator-${clip.id}`;
+
+  // Prevent hydration mismatch by only reading from store after mount
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const progress = isMounted && hasReachedCheckpoint(clip.id, 'complete')
     ? 100
-    : hasReachedCheckpoint(clip.id, '90s')
+    : isMounted && hasReachedCheckpoint(clip.id, '90s')
     ? 90
-    : hasReachedCheckpoint(clip.id, '60s')
+    : isMounted && hasReachedCheckpoint(clip.id, '60s')
     ? 60
-    : hasReachedCheckpoint(clip.id, '30s')
+    : isMounted && hasReachedCheckpoint(clip.id, '30s')
     ? 30
     : 0;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      whileHover={{ y: -4 }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      className="group relative bg-card rounded-2xl border overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="group relative bg-card rounded-2xl border overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
     >
       {/* Progress Ring (if started) */}
       {progress > 0 && (
@@ -103,13 +107,10 @@ export function ClipCard({ clip }: ClipCardProps) {
           )}
 
           {/* Play Button Overlay */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{
-              opacity: isHovered ? 1 : 0,
-              scale: isHovered ? 1 : 0.9,
-            }}
-            className="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-sm"
+          <div
+            className={`absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-sm transition-opacity duration-300 ${
+              isHovered ? 'opacity-100' : 'opacity-0'
+            }`}
           >
             <Button
               size="lg"
@@ -117,7 +118,7 @@ export function ClipCard({ clip }: ClipCardProps) {
             >
               <Play className="w-8 h-8 ml-1" />
             </Button>
-          </motion.div>
+          </div>
 
           {/* Duration Chip */}
           <div className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1">
@@ -174,42 +175,24 @@ export function ClipCard({ clip }: ClipCardProps) {
         </div>
 
         {/* Creator */}
-        <div className="flex items-center gap-3 pt-2">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white font-bold">
-            {clip.creator.name.charAt(0)}
+        <Link href={`/creator/${creatorId}`}>
+          <div className="flex items-center gap-3 pt-2 cursor-pointer group">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white font-bold">
+              {clip.creator.name.charAt(0)}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium truncate group-hover:text-purple-600 transition">{clip.creator.name}</p>
+              <p className="text-xs text-muted-foreground">Creator</p>
+            </div>
+            <FollowButton creatorId={creatorId} creatorName={clip.creator.name} variant="compact" />
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">{clip.creator.name}</p>
-            <p className="text-xs text-muted-foreground">Creator</p>
-          </div>
-        </div>
+        </Link>
 
         {/* Actions */}
         <div className="flex items-center gap-2 pt-3 border-t">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setIsLiked(!isLiked)}
-            className={isLiked ? 'text-red-500' : ''}
-          >
-            <Heart
-              className="w-4 h-4 mr-1"
-              fill={isLiked ? 'currentColor' : 'none'}
-            />
-            {clip._count.likes + (isLiked ? 1 : 0)}
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setIsSaved(!isSaved)}
-            className={isSaved ? 'text-blue-500' : ''}
-          >
-            <Bookmark
-              className="w-4 h-4"
-              fill={isSaved ? 'currentColor' : 'none'}
-            />
-          </Button>
+          <LikeButton clipId={clip.id} initialCount={clip._count.likes} />
+          <CommentButton clipId={clip.id} />
+          <SaveButton clipId={clip.id} />
 
           <div className="flex-1" />
 
@@ -221,18 +204,14 @@ export function ClipCard({ clip }: ClipCardProps) {
         </div>
       </div>
 
-      {/* Completion Animation */}
+      {/* Completion Badge */}
       {progress === 100 && (
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: [0, 1.2, 1] }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-green-500 text-white rounded-full p-4 shadow-xl"
-        >
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-green-500 text-white rounded-full p-4 shadow-xl">
           <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
           </svg>
-        </motion.div>
+        </div>
       )}
-    </motion.div>
+    </div>
   );
 }

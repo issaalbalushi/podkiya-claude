@@ -29,7 +29,7 @@ export default function HomePage() {
 
           {/* CTA */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-            <Link href="/explore">
+            <Link href="/feed">
               <Button size="lg" className="rounded-full px-8 py-6 text-lg group">
                 Start Learning
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
