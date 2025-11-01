@@ -56,11 +56,11 @@ export function Header() {
         </div>
 
         {/* Right Side - Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4 mr-2">
           {/* Search Sheet */}
           <Sheet open={isSearchOpen} onOpenChange={setIsSearchOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full">
+              <Button variant="ghost" size="icon" className="rounded-full cursor-pointer">
                 <Search className="w-5 h-5" />
               </Button>
             </SheetTrigger>
@@ -83,7 +83,7 @@ export function Header() {
           {/* Notifications Sheet */}
           <Sheet open={isNotificationsOpen} onOpenChange={setIsNotificationsOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full">
+              <Button variant="ghost" size="icon" className="rounded-full cursor-pointer">
                 <Bell className="w-5 h-5" />
               </Button>
             </SheetTrigger>
@@ -100,7 +100,7 @@ export function Header() {
           <ThemeToggle />
 
           <Link href="/profile">
-            <Button variant="ghost" size="icon" className="rounded-full">
+            <Button variant="ghost" size="icon" className="rounded-full cursor-pointer">
               <User className="w-5 h-5" />
             </Button>
           </Link>
