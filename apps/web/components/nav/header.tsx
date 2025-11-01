@@ -56,7 +56,7 @@ export function Header() {
         </div>
 
         {/* Right Side - Actions */}
-        <div className="flex items-center gap-4 mr-2">
+        <div className="flex items-center gap-3">
           {/* Search Sheet */}
           <Sheet open={isSearchOpen} onOpenChange={setIsSearchOpen}>
             <SheetTrigger asChild>
@@ -64,7 +64,7 @@ export function Header() {
                 <Search className="w-5 h-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="top" className="h-auto">
+            <SheetContent side="top" className="h-auto z-[60]">
               <div className="mt-8">
                 <h2 className="text-2xl font-bold mb-4">Search Clips</h2>
                 <input
@@ -87,7 +87,7 @@ export function Header() {
                 <Bell className="w-5 h-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent className="z-[60]">
               <div className="mt-8">
                 <h2 className="text-2xl font-bold mb-4">Notifications</h2>
                 <p className="text-sm text-muted-foreground">
@@ -108,11 +108,11 @@ export function Header() {
           {/* Mobile Menu */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="rounded-full">
+              <Button variant="ghost" size="icon" className="rounded-full cursor-pointer">
                 <Menu className="w-5 h-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent className="z-[60]">
               <nav className="flex flex-col gap-4 mt-8">
                 <Link
                   href="/feed"
