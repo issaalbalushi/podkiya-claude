@@ -59,10 +59,10 @@ export function Header() {
         <div className="flex items-center gap-3">
           {/* Search Sheet */}
           <Sheet open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-            <SheetTrigger>
-              <Button variant="ghost" size="icon" className="rounded-full cursor-pointer">
+            <SheetTrigger asChild>
+              <button className="inline-flex items-center justify-center h-10 w-10 rounded-full hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer">
                 <Search className="w-5 h-5" />
-              </Button>
+              </button>
             </SheetTrigger>
             <SheetContent side="top" className="h-auto z-[60]">
               <div className="mt-8">
@@ -82,10 +82,10 @@ export function Header() {
 
           {/* Notifications Sheet */}
           <Sheet open={isNotificationsOpen} onOpenChange={setIsNotificationsOpen}>
-            <SheetTrigger>
-              <Button variant="ghost" size="icon" className="rounded-full cursor-pointer">
+            <SheetTrigger asChild>
+              <button className="inline-flex items-center justify-center h-10 w-10 rounded-full hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer">
                 <Bell className="w-5 h-5" />
-              </Button>
+              </button>
             </SheetTrigger>
             <SheetContent className="z-[60]">
               <div className="mt-8">
@@ -107,10 +107,10 @@ export function Header() {
 
           {/* Mobile Menu */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger className="md:hidden">
-              <Button variant="ghost" size="icon" className="rounded-full cursor-pointer">
+            <SheetTrigger asChild>
+              <button className="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-full hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer">
                 <Menu className="w-5 h-5" />
-              </Button>
+              </button>
             </SheetTrigger>
             <SheetContent className="z-[60]">
               <nav className="flex flex-col gap-4 mt-8">
