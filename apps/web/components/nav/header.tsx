@@ -59,7 +59,7 @@ export function Header() {
         <div className="flex items-center gap-3">
           {/* Search Sheet */}
           <Sheet open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-            <SheetTrigger asChild>
+            <SheetTrigger>
               <Button variant="ghost" size="icon" className="rounded-full cursor-pointer">
                 <Search className="w-5 h-5" />
               </Button>
@@ -82,7 +82,7 @@ export function Header() {
 
           {/* Notifications Sheet */}
           <Sheet open={isNotificationsOpen} onOpenChange={setIsNotificationsOpen}>
-            <SheetTrigger asChild>
+            <SheetTrigger>
               <Button variant="ghost" size="icon" className="rounded-full cursor-pointer">
                 <Bell className="w-5 h-5" />
               </Button>
@@ -107,7 +107,7 @@ export function Header() {
 
           {/* Mobile Menu */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild className="md:hidden">
+            <SheetTrigger className="md:hidden">
               <Button variant="ghost" size="icon" className="rounded-full cursor-pointer">
                 <Menu className="w-5 h-5" />
               </Button>
