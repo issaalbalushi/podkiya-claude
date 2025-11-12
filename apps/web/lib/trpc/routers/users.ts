@@ -297,7 +297,7 @@ export const usersRouter = router({
           clipId: input.clipId,
         },
         orderBy: {
-          createdAt: 'desc',
+          startedAt: 'desc',
         },
       });
 
@@ -337,7 +337,7 @@ export const usersRouter = router({
         },
         take: input.limit,
         orderBy: {
-          updatedAt: 'desc',
+          startedAt: 'desc',
         },
         include: {
           clip: {
