@@ -2,8 +2,8 @@
 
 import { useParams } from 'next/navigation';
 import { AudioPlayer } from '@/components/player/audio-player';
-import { mockClips } from '@/lib/mock-data';
-import { Heart, Bookmark, Share2, TrendingUp, Clock } from 'lucide-react';
+import { trpc } from '@/lib/trpc/client';
+import { Heart, Bookmark, Share2, TrendingUp, Clock, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -15,12 +15,60 @@ export default function ClipPage() {
   const params = useParams();
   const clipId = params.id as string;
 
-  const clip = mockClips.find((c) => c.id === clipId);
-  const relatedClips = mockClips.filter((c) => c.id !== clipId).slice(0, 3);
+  // Fetch clip data
+  const { data: clip, isLoading } = trpc.clips.getById.useQuery({ id: clipId });
 
-  const [isLiked, setIsLiked] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
+  // Fetch related clips
+  const { data: relatedClips } = trpc.clips.getRelated.useQuery(
+    { clipId, limit: 3 },
+    { enabled: !!clip }
+  );
+
+  // Fetch user interaction state
+  const { data: isLikedData } = trpc.users.isLiked.useQuery(
+    { clipId },
+    { enabled: !!clip }
+  );
+
+  const { data: isSavedData } = trpc.users.isSaved.useQuery(
+    { clipId },
+    { enabled: !!clip }
+  );
+
   const [showCompletion, setShowCompletion] = useState(false);
+
+  // Get utils for query invalidation
+  const utils = trpc.useUtils();
+
+  // Social action mutations
+  const toggleLikeMutation = trpc.users.toggleLike.useMutation({
+    onSuccess: () => {
+      utils.clips.getById.invalidate({ id: clipId });
+      utils.users.isLiked.invalidate({ clipId });
+    },
+  });
+
+  const toggleSaveMutation = trpc.users.toggleSave.useMutation({
+    onSuccess: () => {
+      utils.users.isSaved.invalidate({ clipId });
+    },
+  });
+
+  const handleLike = () => {
+    toggleLikeMutation.mutate({ clipId });
+  };
+
+  const handleSave = () => {
+    toggleSaveMutation.mutate({ clipId });
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
+      </div>
+    );
+  }
 
   if (!clip) {
     return (
@@ -103,27 +151,29 @@ export default function ClipPage() {
             {/* Actions */}
             <div className="flex items-center gap-3 pt-4 border-t">
               <Button
-                variant={isLiked ? 'default' : 'outline'}
-                onClick={() => setIsLiked(!isLiked)}
+                variant={isLikedData ? 'default' : 'outline'}
+                onClick={handleLike}
+                disabled={toggleLikeMutation.isLoading}
                 className="rounded-full"
               >
                 <Heart
                   className="w-4 h-4 mr-2"
-                  fill={isLiked ? 'currentColor' : 'none'}
+                  fill={isLikedData ? 'currentColor' : 'none'}
                 />
-                {clip._count.likes + (isLiked ? 1 : 0)} Likes
+                {clip._count.likes} Likes
               </Button>
 
               <Button
-                variant={isSaved ? 'default' : 'outline'}
-                onClick={() => setIsSaved(!isSaved)}
+                variant={isSavedData ? 'default' : 'outline'}
+                onClick={handleSave}
+                disabled={toggleSaveMutation.isLoading}
                 className="rounded-full"
               >
                 <Bookmark
                   className="w-4 h-4 mr-2"
-                  fill={isSaved ? 'currentColor' : 'none'}
+                  fill={isSavedData ? 'currentColor' : 'none'}
                 />
-                {isSaved ? 'Saved' : 'Save'}
+                {isSavedData ? 'Saved' : 'Save'}
               </Button>
 
               <Button variant="outline" className="rounded-full">

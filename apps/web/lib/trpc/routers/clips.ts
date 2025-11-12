@@ -265,4 +265,109 @@ export const clipsRouter = router({
 
       return clips;
     }),
+
+  // Get user's liked clips
+  getLiked: protectedProcedure
+    .input(z.object({ limit: z.number().default(100) }))
+    .query(async ({ ctx, input }) => {
+      const liked = await ctx.db.like.findMany({
+        where: {
+          userId: ctx.session.user.id,
+        },
+        take: input.limit,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        include: {
+          clip: {
+            include: {
+              creator: {
+                select: {
+                  id: true,
+                  name: true,
+                  email: true,
+                  avatarUrl: true,
+                },
+              },
+              tags: {
+                include: {
+                  tag: true,
+                },
+              },
+              _count: {
+                select: {
+                  likes: true,
+                  saves: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      return liked.map((l) => l.clip);
+    }),
+
+  // Get related clips by tags
+  getRelated: publicProcedure
+    .input(z.object({ clipId: z.string(), limit: z.number().default(6) }))
+    .query(async ({ ctx, input }) => {
+      // Get the current clip's tags
+      const currentClip = await ctx.db.clip.findUnique({
+        where: { id: input.clipId },
+        include: {
+          tags: {
+            select: {
+              tagId: true,
+            },
+          },
+        },
+      });
+
+      if (!currentClip) {
+        return [];
+      }
+
+      const tagIds = currentClip.tags.map((t) => t.tagId);
+
+      // Find clips with overlapping tags
+      const relatedClips = await ctx.db.clip.findMany({
+        where: {
+          status: 'approved',
+          id: { not: input.clipId },
+          tags: {
+            some: {
+              tagId: { in: tagIds },
+            },
+          },
+        },
+        take: input.limit,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        include: {
+          creator: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              avatarUrl: true,
+            },
+          },
+          tags: {
+            include: {
+              tag: true,
+            },
+          },
+          _count: {
+            select: {
+              likes: true,
+              saves: true,
+            },
+          },
+        },
+      });
+
+      return relatedClips;
+    }),
 });
