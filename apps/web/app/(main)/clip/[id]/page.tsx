@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { AudioPlayer } from '@/components/player/audio-player';
 import { trpc } from '@/lib/trpc/client';
 import { Heart, Bookmark, Share2, TrendingUp, Clock, Loader2 } from 'lucide-react';
@@ -10,10 +10,13 @@ import { motion } from 'framer-motion';
 import { formatDuration } from '@podkiya/core';
 import { ClipCard } from '@/components/feed/clip-card';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 export default function ClipPage() {
   const params = useParams();
+  const router = useRouter();
   const clipId = params.id as string;
+  const { data: session, status } = useSession();
 
   // Fetch clip data
   const { data: clip, isLoading } = trpc.clips.getById.useQuery({ id: clipId });
@@ -24,15 +27,15 @@ export default function ClipPage() {
     { enabled: !!clip }
   );
 
-  // Fetch user interaction state
+  // Fetch user interaction state (only when authenticated)
   const { data: isLikedData } = trpc.users.isLiked.useQuery(
     { clipId },
-    { enabled: !!clip }
+    { enabled: !!clip && status === 'authenticated' }
   );
 
   const { data: isSavedData } = trpc.users.isSaved.useQuery(
     { clipId },
-    { enabled: !!clip }
+    { enabled: !!clip && status === 'authenticated' }
   );
 
   const [showCompletion, setShowCompletion] = useState(false);
@@ -55,10 +58,18 @@ export default function ClipPage() {
   });
 
   const handleLike = () => {
+    if (status !== 'authenticated') {
+      router.push('/signin');
+      return;
+    }
     toggleLikeMutation.mutate({ clipId });
   };
 
   const handleSave = () => {
+    if (status !== 'authenticated') {
+      router.push('/signin');
+      return;
+    }
     toggleSaveMutation.mutate({ clipId });
   };
 

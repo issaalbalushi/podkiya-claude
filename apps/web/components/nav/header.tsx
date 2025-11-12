@@ -6,7 +6,7 @@ import { Menu, Search, Bell, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from './theme-toggle';
 import { useState } from 'react';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,7 +64,7 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="top" className="h-auto z-[60]">
               <div className="mt-8">
-                <h2 className="text-2xl font-bold mb-4">Search Clips</h2>
+                <SheetTitle className="text-2xl font-bold mb-4">Search Clips</SheetTitle>
                 <input
                   type="text"
                   placeholder="Search by title, tag, or creator..."
@@ -85,7 +85,7 @@ export function Header() {
             </SheetTrigger>
             <SheetContent className="z-[60]">
               <div className="mt-8">
-                <h2 className="text-2xl font-bold mb-4">Notifications</h2>
+                <SheetTitle className="text-2xl font-bold mb-4">Notifications</SheetTitle>
                 <p className="text-sm text-muted-foreground">
                   No new notifications yet. We'll notify you when you get likes, comments, and new followers!
                 </p>

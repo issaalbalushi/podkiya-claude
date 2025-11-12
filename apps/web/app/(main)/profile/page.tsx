@@ -1,32 +1,45 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BookmarkCheck, Heart, Users, Clock, GraduationCap, TrendingUp, Loader2 } from 'lucide-react';
 import { ClipCard } from '@/components/feed/clip-card';
 import { trpc } from '@/lib/trpc/client';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function ProfilePage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<'saved' | 'liked' | 'completed'>('saved');
 
-  // Fetch user profile
-  const { data: userProfile } = trpc.users.getMe.useQuery();
+  // Redirect to signin if not authenticated
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/signin');
+    }
+  }, [status, router]);
+
+  // Fetch user profile (only if authenticated)
+  const { data: userProfile } = trpc.users.getMe.useQuery(undefined, {
+    enabled: status === 'authenticated',
+  });
 
   // Fetch clips based on active tab
   const { data: savedClips, isLoading: savedLoading } = trpc.clips.getSaved.useQuery(
     { limit: 100 },
-    { enabled: activeTab === 'saved' }
+    { enabled: activeTab === 'saved' && status === 'authenticated' }
   );
 
   const { data: likedClips, isLoading: likedLoading } = trpc.clips.getLiked.useQuery(
     { limit: 100 },
-    { enabled: activeTab === 'liked' }
+    { enabled: activeTab === 'liked' && status === 'authenticated' }
   );
 
   const { data: completedClips, isLoading: completedLoading } = trpc.users.getCompletedClips.useQuery(
     { limit: 100 },
-    { enabled: activeTab === 'completed' }
+    { enabled: activeTab === 'completed' && status === 'authenticated' }
   );
 
   // Determine which data to display
