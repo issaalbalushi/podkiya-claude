@@ -8,11 +8,11 @@ export const mockClips = [
     description: 'Why we sleep and what happens during different sleep stages.',
     durationSec: 120,
     audioUrl: SAMPLE_AUDIO_URL,
-    thumbUrl: null,
+    thumbUrl: undefined,
     creator: {
       id: 'creator-1',
       name: 'Dr. Emily Chen',
-      avatarUrl: null,
+      avatarUrl: undefined,
     },
     tags: [
       { tag: { label_en: 'Science', slug: 'science' } },
@@ -29,11 +29,11 @@ export const mockClips = [
     description: 'Breaking down quantum computing concepts in simple terms.',
     durationSec: 150,
     audioUrl: SAMPLE_AUDIO_URL,
-    thumbUrl: null,
+    thumbUrl: undefined,
     creator: {
       id: 'creator-2',
       name: 'Prof. Marcus Johnson',
-      avatarUrl: null,
+      avatarUrl: undefined,
     },
     tags: [
       { tag: { label_en: 'Technology', slug: 'technology' } },
@@ -50,11 +50,11 @@ export const mockClips = [
     description: 'Learn how habits form and how to build good ones.',
     durationSec: 180,
     audioUrl: SAMPLE_AUDIO_URL,
-    thumbUrl: null,
+    thumbUrl: undefined,
     creator: {
       id: 'creator-3',
       name: 'Dr. Sarah Williams',
-      avatarUrl: null,
+      avatarUrl: undefined,
     },
     tags: [
       { tag: { label_en: 'Psychology', slug: 'psychology' } },
@@ -71,11 +71,11 @@ export const mockClips = [
     description: 'The science behind global warming in 3 minutes.',
     durationSec: 165,
     audioUrl: SAMPLE_AUDIO_URL,
-    thumbUrl: null,
+    thumbUrl: undefined,
     creator: {
       id: 'creator-4',
       name: 'Dr. James Anderson',
-      avatarUrl: null,
+      avatarUrl: undefined,
     },
     tags: [
       { tag: { label_en: 'Environment', slug: 'environment' } },
@@ -92,11 +92,11 @@ export const mockClips = [
     description: 'Ancient philosophy for modern life.',
     durationSec: 140,
     audioUrl: SAMPLE_AUDIO_URL,
-    thumbUrl: null,
+    thumbUrl: undefined,
     creator: {
       id: 'creator-1',
       name: 'Dr. Emily Chen',
-      avatarUrl: null,
+      avatarUrl: undefined,
     },
     tags: [
       { tag: { label_en: 'Philosophy', slug: 'philosophy' } },
@@ -113,11 +113,11 @@ export const mockClips = [
     description: 'Key principles for better negotiations.',
     durationSec: 155,
     audioUrl: SAMPLE_AUDIO_URL,
-    thumbUrl: null,
+    thumbUrl: undefined,
     creator: {
       id: 'creator-5',
       name: 'Sarah Miller',
-      avatarUrl: null,
+      avatarUrl: undefined,
     },
     tags: [
       { tag: { label_en: 'Business', slug: 'business' } },
@@ -134,11 +134,11 @@ export const mockClips = [
     description: 'What are black holes and how do they work?',
     durationSec: 175,
     audioUrl: SAMPLE_AUDIO_URL,
-    thumbUrl: null,
+    thumbUrl: undefined,
     creator: {
       id: 'creator-2',
       name: 'Prof. Marcus Johnson',
-      avatarUrl: null,
+      avatarUrl: undefined,
     },
     tags: [
       { tag: { label_en: 'Astronomy', slug: 'astronomy' } },
@@ -155,11 +155,11 @@ export const mockClips = [
     description: 'From Ethiopia to your morning cup.',
     durationSec: 130,
     audioUrl: SAMPLE_AUDIO_URL,
-    thumbUrl: null,
+    thumbUrl: undefined,
     creator: {
       id: 'creator-6',
       name: 'David Lee',
-      avatarUrl: null,
+      avatarUrl: undefined,
     },
     tags: [
       { tag: { label_en: 'History', slug: 'history' } },
@@ -176,11 +176,11 @@ export const mockClips = [
     description: 'Blockchain and digital currencies explained.',
     durationSec: 190,
     audioUrl: SAMPLE_AUDIO_URL,
-    thumbUrl: null,
+    thumbUrl: undefined,
     creator: {
       id: 'creator-7',
       name: 'Alex Zhang',
-      avatarUrl: null,
+      avatarUrl: undefined,
     },
     tags: [
       { tag: { label_en: 'Technology', slug: 'technology' } },
@@ -197,11 +197,11 @@ export const mockClips = [
     description: 'Science-backed benefits of mindfulness.',
     durationSec: 145,
     audioUrl: SAMPLE_AUDIO_URL,
-    thumbUrl: null,
+    thumbUrl: undefined,
     creator: {
       id: 'creator-3',
       name: 'Dr. Sarah Williams',
-      avatarUrl: null,
+      avatarUrl: undefined,
     },
     tags: [
       { tag: { label_en: 'Health', slug: 'health' } },
@@ -218,11 +218,11 @@ export const mockClips = [
     description: 'Art, culture, and innovation in medieval Europe.',
     durationSec: 170,
     audioUrl: SAMPLE_AUDIO_URL,
-    thumbUrl: null,
+    thumbUrl: undefined,
     creator: {
       id: 'creator-8',
       name: 'Prof. Isabella Romano',
-      avatarUrl: null,
+      avatarUrl: undefined,
     },
     tags: [
       { tag: { label_en: 'History', slug: 'history' } },
@@ -239,11 +239,11 @@ export const mockClips = [
     description: 'How machines learn from data.',
     durationSec: 185,
     audioUrl: SAMPLE_AUDIO_URL,
-    thumbUrl: null,
+    thumbUrl: undefined,
     creator: {
       id: 'creator-2',
       name: 'Prof. Marcus Johnson',
-      avatarUrl: null,
+      avatarUrl: undefined,
     },
     tags: [
       { tag: { label_en: 'Technology', slug: 'technology' } },

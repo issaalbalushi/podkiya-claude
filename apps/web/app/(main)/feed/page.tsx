@@ -2,10 +2,10 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { VerticalClipCard } from '@/components/feed/vertical-clip-card';
-import { mockClips } from '@/lib/mock-data';
+import { trpc } from '@/lib/trpc/client';
 import { useSocialStore } from '@/lib/store/social-store';
 import { Button } from '@/components/ui/button';
-import { X, Home, Menu } from 'lucide-react';
+import { X, Home, Menu, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -14,7 +14,23 @@ export default function FeedPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showSessionNudge, setShowSessionNudge] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [clips] = useState(mockClips);
+
+  // Fetch real clips from database via tRPC
+  const { data, isLoading, error } = trpc.clips.getFeed.useQuery(
+    { limit: 20 },
+    {
+      onSuccess: (data) => {
+        console.log('tRPC Query Success:', data);
+      },
+      onError: (error) => {
+        console.error('tRPC Query Error:', error);
+      },
+    }
+  );
+  const clips = data?.clips || [];
+
+  // Debug logging
+  console.log('Feed Page State:', { isLoading, hasError: !!error, clipsCount: clips.length });
 
   const { startSession, endSession, getSessionDuration, sessionClipsCompleted } = useSocialStore();
 
@@ -71,20 +87,24 @@ export default function FeedPage() {
     let touchEndY = 0;
 
     const handleTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY;
+      if (e.touches[0]) {
+        touchStartY = e.touches[0].clientY;
+      }
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
-      touchEndY = e.changedTouches[0].clientY;
-      const swipeDistance = touchStartY - touchEndY;
+      if (e.changedTouches[0]) {
+        touchEndY = e.changedTouches[0].clientY;
+        const swipeDistance = touchStartY - touchEndY;
 
-      // Swipe up (next clip)
-      if (swipeDistance > 50) {
-        handleNext();
-      }
-      // Swipe down (previous clip)
-      else if (swipeDistance < -50) {
-        handlePrevious();
+        // Swipe up (next clip)
+        if (swipeDistance > 50) {
+          handleNext();
+        }
+        // Swipe down (previous clip)
+        else if (swipeDistance < -50) {
+          handlePrevious();
+        }
       }
     };
 
@@ -97,14 +117,46 @@ export default function FeedPage() {
     };
   }, [handleNext, handlePrevious]);
 
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+        <div className="text-center text-white">
+          <Loader2 className="w-12 h-12 animate-spin mx-auto mb-4" />
+          <h2 className="text-2xl font-bold mb-2">Loading clips...</h2>
+          <p className="text-white/70">Finding the best content for you</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+        <div className="text-center text-white">
+          <h2 className="text-2xl font-bold mb-2">Oops! Something went wrong</h2>
+          <p className="text-white/70 mb-4">{error.message}</p>
+          <Button onClick={() => window.location.reload()} className="bg-white text-purple-600">
+            Try Again
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   const currentClip = clips[currentIndex];
 
+  // No clips state
   if (!currentClip) {
     return (
       <div className="h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
         <div className="text-center text-white">
-          <h2 className="text-2xl font-bold mb-2">No more clips!</h2>
-          <p className="text-white/70">Check back later for more content.</p>
+          <h2 className="text-2xl font-bold mb-2">No clips available yet!</h2>
+          <p className="text-white/70 mb-4">Be the first to share knowledge</p>
+          <Link href="/upload">
+            <Button className="bg-white text-purple-600">Upload a Clip</Button>
+          </Link>
         </div>
       </div>
     );

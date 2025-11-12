@@ -74,7 +74,7 @@ export default function CreatorPage() {
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
                 <h1 className="text-3xl font-bold">{creatorInfo.name}</h1>
-                <CheckCircle2 className="w-6 h-6 text-blue-500" title="Verified Creator" />
+                <CheckCircle2 className="w-6 h-6 text-blue-500" aria-label="Verified Creator" />
               </div>
 
               <p className="text-muted-foreground mb-4">

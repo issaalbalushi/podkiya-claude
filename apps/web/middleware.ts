@@ -4,20 +4,34 @@ export default function middleware(request: NextRequest) {
   // Create response
   const response = NextResponse.next();
 
-  // Add custom headers
+  // Relaxed CSP for local development (Next.js needs unsafe-eval in dev mode)
+  const isDev = process.env.NODE_ENV === 'development';
+
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
-  const cspHeader = `
-    default-src 'self';
-    script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https:;
-    style-src 'self' 'unsafe-inline';
-    img-src 'self' blob: data: https:;
-    font-src 'self';
-    object-src 'none';
-    base-uri 'self';
-    form-action 'self';
-    frame-ancestors 'none';
-    upgrade-insecure-requests;
-  `.replace(/\s{2,}/g, ' ').trim();
+  const cspHeader = isDev
+    ? `
+      default-src 'self';
+      script-src 'self' 'unsafe-eval' 'unsafe-inline';
+      style-src 'self' 'unsafe-inline';
+      img-src 'self' blob: data: https:;
+      font-src 'self' data:;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+      connect-src 'self' ws: wss:;
+    `.replace(/\s{2,}/g, ' ').trim()
+    : `
+      default-src 'self';
+      script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https:;
+      style-src 'self' 'unsafe-inline';
+      img-src 'self' blob: data: https:;
+      font-src 'self';
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+      frame-ancestors 'none';
+      upgrade-insecure-requests;
+    `.replace(/\s{2,}/g, ' ').trim();
 
   response.headers.set('Content-Security-Policy', cspHeader);
   response.headers.set('X-Content-Type-Options', 'nosniff');
